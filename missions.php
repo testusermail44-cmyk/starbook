@@ -1,4 +1,7 @@
 <?php
+
+session_start();
+
 function createMissionPanel($id, $name, $image, $description)
 {
     ?>
