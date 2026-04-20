@@ -25,7 +25,7 @@ require_once (isset($dir) ? $dir : '').'db/connect.php';
         ?>
         <div class="dropmenu">
             <div class="dropmenu-user">
-                <img class="dropmenu-img bbrg" src="<?= isset($dir) ? $dir : '' ?>public/images/users/<?= $_SESSION['user']['image'] ?>" />
+                <img class="dropmenu-img bbrg" src="<?= (strpos($_SESSION['user']['image'], 'http') === 0) ? $_SESSION['user']['image'] : (isset($dir) ? $dir : '') . 'public/images/users/' . $_SESSION['user']['image'] ?>" />
                 <?= $_SESSION['user']['name'] ?>
             </div>
             <div class="dropmenu-content">
