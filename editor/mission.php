@@ -1,7 +1,7 @@
 <?php
 session_start();
 $dir = '../';
-
+ require_once (isset($dir) ? $dir : '').'db/connect.php';
 include('../models/missionModel.php');
 if (isset($_GET['edit'])) {
     $mission = getMission($_GET['mission']);
