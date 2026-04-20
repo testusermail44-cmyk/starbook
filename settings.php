@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('header.php');
+
 include('models/userModel.php');
 $error = '';
 if ($_POST) {
@@ -36,6 +36,7 @@ if ($_POST) {
         }
     }
 }
+    include('header.php');
 ?>
 <!DOCTYPE html>
 <html lang="uk">
@@ -64,7 +65,7 @@ if ($_POST) {
         <input class="input bbrg" type="password" name="password" placeholder="Пароль" />
         <input class="input bbrg" type="password" name="cpass" placeholder="Підтвердити пароль" />
         <?= $error != '' ? "<div class='error'>$error</div>" : '' ?>
-        <button class="btn bbrg ob" type="submit">Зберегти</button>
+        <button id='saveBtn' class="btn bbrg ob" type="submit">Зберегти</button>
     </form>
 </body>
 <script>
@@ -85,6 +86,14 @@ if ($_POST) {
             inp.name = 'avatar';
             form.appendChild(inp);
         }
+    });
+    const form = document.querySelector('form.auth.set');
+    const saveBtn = document.getElementById('saveBtn');
+    form.addEventListener('submit', () => {
+        saveBtn.disabled = true;
+        saveBtn.style.opacity = '0.5';
+        saveBtn.style.cursor = 'not-allowed';
+        saveBtn.innerText = 'Завантаження...';
     });
 </script>
 
