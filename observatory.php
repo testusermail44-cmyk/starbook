@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 function createObjectPanel($id, $name, $image, $type, $description)
 {
     ?>
