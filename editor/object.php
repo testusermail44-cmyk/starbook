@@ -25,7 +25,7 @@ function uploadFile($file, $oldValue, $localPath = "../public/models/") {
     $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
 
     if (in_array($ext, $imageExtensions)) {
-        $apiKey = 'ВАШ_API_KEY_ТУТ';
+        $apiKey = getenv('IMG_API');
         $imageData = base64_encode(file_get_contents($file['tmp_name']));
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://api.imgbb.com/1/upload?key=' . $apiKey);
