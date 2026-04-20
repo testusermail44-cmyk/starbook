@@ -155,7 +155,7 @@ if (isset($_POST['name'])) {
                     </div>
                 </div>
             </div>
-            <button class="btn bbrg ob" type="submit">Зберегти</button>
+            <button id='saveBtn' class="btn bbrg ob" type="submit">Зберегти</button>
         </form>
     </div>
     <script>
@@ -319,7 +319,14 @@ if (isset($_POST['name'])) {
                 return;
             }
         });
-
+        const form = document.querySelector('form.edit.set');
+        const saveBtn = document.getElementById('saveBtn');
+        form.addEventListener('submit', () => {
+            saveBtn.disabled = true;
+            saveBtn.style.opacity = '0.5';
+            saveBtn.style.cursor = 'not-allowed';
+            saveBtn.innerText = 'Завантаження...';
+        });
     </script>
 
     <script src="../js/text.js"></script>
