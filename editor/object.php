@@ -1,7 +1,7 @@
 <?php
 session_start();
 $dir = '../';
-include('../header.php');
+
 include('../models/objectModel.php');
 if (isset($_GET['del'])) {
     $delId = intval($_GET['object']);
@@ -89,6 +89,7 @@ if (isset($_POST['name'])) {
     header("Location: objectEditor.php");
     exit;
 }
+    include('../header.php');
 ?>
 <!DOCTYPE html>
 <html lang="uk">
