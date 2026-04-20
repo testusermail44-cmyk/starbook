@@ -30,7 +30,7 @@ if ($object['tid'] == 3) {
     </div>
     <div class="hide info-panel vc bbrg">
       <div class="hc c fn">
-        <img class="img-i bbrg" src="<?= (strpos($image, 'http') === 0) ? $image : "public/images/objects/" . ($image ?: 'default.png') ?>" />
+        <img class="img-i bbrg" src="<?= (strpos($object['image'], 'http') === 0) ? $object['image'] : "public/images/objects/" . $object['image'] ?>" />
         <div class="vc">
           <?php
           $parameters = explode("\n", $object['parameters']);
