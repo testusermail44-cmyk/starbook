@@ -3,6 +3,7 @@ session_start();
 $dir = '../';
 require_once (isset($dir) ? $dir : '').'db/connect.php';
 include('../models/objectModel.php');
+$types = getTypes();
 if (isset($_GET['del'])) {
     $delId = intval($_GET['object']);
     $objectToDel = getInfoAboutObject($delId);
