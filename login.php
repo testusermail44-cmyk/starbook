@@ -2,7 +2,7 @@
 
 session_start();
 
-    include('header.php');
+
     include('models/userModel.php');
     $error = '';
     if (isset($_POST['email'])) {
@@ -13,6 +13,7 @@ session_start();
             $error = 'Email або пароль введено не правильно!';
         }
     }
+include('header.php');
 ?>
 <!DOCTYPE html>
 <html lang="uk">
