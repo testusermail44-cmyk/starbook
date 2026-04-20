@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once (isset($dir) ? $dir : '').'db/connect.php';
 ?>
 <header class="hc">
