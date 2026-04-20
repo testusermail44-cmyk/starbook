@@ -1,0 +1,14 @@
+.galery-i {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+}
+
+.galery {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+  flex-wrap: wrap;
+}

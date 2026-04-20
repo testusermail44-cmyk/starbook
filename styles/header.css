@@ -1,0 +1,155 @@
+header {
+  background: black;
+  height: 40px;
+  box-shadow: 0 0 5px 2px #ff0000;
+  padding: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.logo {
+  font-size: 25px !important;
+  text-shadow: 0 0 10px #ff0000, 0 0 0px #ffffff, 0 0 2px #ff0000,
+    0 0 10px #b5f6ff, 0 0 5px #ff0039 !important;
+  text-align: center;
+  pointer-events: all !important;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.logo::before,
+.logo::after {
+  box-shadow: 0 0 10px #ff0000, 0 0 0px #ffffff, 0 0 2px #ff0000,
+    0 0 10px #b5f6ff, 0 0 5px #ff0039 !important;
+}
+
+.headerc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.t.s {
+  padding-top: 2px;
+  position: relative;
+}
+
+.t.s::before {
+  position: absolute;
+  right: 0;
+  top: 0;
+  content: "";
+  height: 2px;
+  width: 100%;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #1700ff, 0 0 0px #ffffff, 0 0 2px #003cff,
+    0 0 10px #b5f6ff, 0 0 30px #00e0ff;
+}
+
+.hb {
+  width: 140px;
+  display: flex;
+}
+
+.btn.log {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  padding: 0px;
+  overflow: hidden;
+}
+
+.is {
+  background: #0b0035;
+  border: none;
+  font-size: 18px;
+  font-family: "Space";
+  padding: 10px;
+  color: white;
+}
+
+.btn-search {
+  border: none;
+  background: #0b0035;
+  position: relative;
+}
+
+.btn-search::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  border: 1px solid #ff8282;
+  box-shadow: 0 0 8px #ff0707;
+  transition: 0.5s;
+}
+
+.hbtn {
+  font-size: 25px;
+  margin-left: 10px;
+  text-decoration: none;
+  color: white;
+}
+
+.r:hover .btn-search {
+  border: none;
+  box-shadow: none;
+}
+
+.r:hover .btn-search::after {
+  border: 1px solid #baa5ff;
+  box-shadow: 0 0 8px #07f4ff;
+}
+
+.dropmenu {
+  position: relative;
+  width: 200px;
+  background: black;
+  z-index: 1;
+}
+
+.dropmenu-user {
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
+  align-items: center;
+}
+
+.dropmenu-img {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+}
+
+.dropmenu-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: absolute;
+  background: black;
+  border-radius: 0px 0px 10px 10px;
+  box-shadow: 0 4px 8px #ff0707;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s;
+  z-index: 0;
+}
+
+.dropmenu:hover .dropmenu-content{
+  opacity: 1;
+  pointer-events: all;
+}
+
+.dropmenu-item {
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+}
+ 
