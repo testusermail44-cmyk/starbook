@@ -1,4 +1,5 @@
 <?php
+session_start();
 $dir = '../';
 include('../header.php');
 include('../models/missionModel.php');
