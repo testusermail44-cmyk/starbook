@@ -2,7 +2,7 @@
 
 session_start();
 
-
+    require_once (isset($dir) ? $dir : '').'db/connect.php';
     include('models/userModel.php');
     $error = '';
     if (isset($_POST['email'])) {
