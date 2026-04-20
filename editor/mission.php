@@ -73,7 +73,7 @@ if (isset($_POST['name'])) {
                 value="<?= isset($_GET['edit']) ? $mission['name'] : '' ?>" />
             <textarea class="input bbrg tar" name="description" placeholder="Опис..."
                 required><?= isset($_GET['edit']) ? $mission['description'] : '' ?></textarea>
-            <button class="btn bbrg ob" type="submit">Зберегти</button>
+            <button id="saveBtn" class="btn bbrg ob" type="submit">Зберегти</button>
         </form>
     </div>
     <script>
@@ -94,6 +94,14 @@ if (isset($_POST['name'])) {
                 inp.name = 'avatar';
                 form.appendChild(inp);
             }
+        });
+        const form = document.querySelector('form.edit.set');
+        const saveBtn = document.getElementById('saveBtn');
+        form.addEventListener('submit', () => {
+            saveBtn.disabled = true;
+            saveBtn.style.opacity = '0.5';
+            saveBtn.style.cursor = 'not-allowed';
+            saveBtn.innerText = 'Завантаження...';
         });
     </script>
 </body>
