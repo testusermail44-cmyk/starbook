@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('header.php');
+
 include('models/userModel.php');
 $error = '';
 if (isset($_POST['name'])) {
@@ -21,6 +21,7 @@ if (isset($_POST['name'])) {
         $error = 'Паролі повинні співпадати!';
     }
 }
+    include('header.php');
 ?>
 <html lang="uk">
 <head>
