@@ -1,5 +1,22 @@
 <?php
 session_start();
+include('header.php');
+
+include_once('models/objectModel.php');
+include_once('models/missionModel.php');
+
+$objects = getObjects(); 
+$missions = getMissions();
+
+function getFullImgPath($image, $dir) {
+    if (empty($image) || $image == 'default.png') {
+        return $dir . '/default.png';
+    }
+    if (strpos($image, 'http') === 0) {
+        return $image;
+    }
+    return $dir . '/' . $image;
+}
 ?>
 <html lang="uk">
 <head>
@@ -12,24 +29,6 @@ session_start();
     <title>Галерея</title>
 </head>
 <body>
-    <?php
-    include('header.php');
-    include_once('objectModel.php');
-    include_once('missionModel.php');
-
-    $objects = getObjects(); 
-    $missions = getMissions();
-
-    function getFullImgPath($image, $dir) {
-        if (empty($image) || $image == 'default.png') {
-            return $dir . '/default.png';
-        }
-        if (strpos($image, 'http') === 0) {
-            return $image;
-        }
-        return $dir . '/' . $image;
-    }
-    ?>
     <div class="back"></div>
     <div class="galery">
         <?php
