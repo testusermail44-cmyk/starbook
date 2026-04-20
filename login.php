@@ -1,4 +1,7 @@
 <?php
+
+session_start();
+
     include('header.php');
     include('models/userModel.php');
     $error = '';
