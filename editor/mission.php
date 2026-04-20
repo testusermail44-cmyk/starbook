@@ -1,7 +1,7 @@
 <?php
 session_start();
 $dir = '../';
-include('../header.php');
+
 include('../models/missionModel.php');
 if (isset($_GET['edit'])) {
     $mission = getMission($_GET['mission']);
@@ -35,6 +35,7 @@ if (isset($_POST['name'])) {
     header("Location: missionEditor.php");
     exit;
 }
+    include('../header.php');
 ?>
 <!DOCTYPE html>
 <html lang="uk">
