@@ -21,7 +21,7 @@ session_start();
   <div class="back"></div>
   <div class="slider hc">
     <div class="slider-btn left">
-      <</div>
+      </div>
         <div class="slider-content">
           <?php
           foreach ($types as $t) { ?>
@@ -34,7 +34,7 @@ session_start();
           }
           ?>
         </div>
-        <div class="slider-btn right">></div>
+        <div class="slider-btn right"></div>
     </div>
 </body>
 <script>
