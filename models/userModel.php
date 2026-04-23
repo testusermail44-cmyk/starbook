@@ -37,12 +37,11 @@ function checkUser($email, $password)
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $user = $stmt->get_result()->fetch_assoc();
-    if (password_verify($password, $user['password'])) {
+    if ($user && password_verify($password, $user['password'])) {
         createSession($user['name'], $user['email'], $user['image'], $user['type']);
         return true;
-    } else {
-        return false;
     }
+    return false;
 }
 
 function createUser($name, $email, $password)
