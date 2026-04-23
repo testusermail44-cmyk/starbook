@@ -1,8 +1,7 @@
 <?php
 
 session_start();
-
-
+require_once (isset($dir) ? $dir : '').'db/connect.php';
 include('models/missionModel.php');
 include('models/commentModel.php');
 
