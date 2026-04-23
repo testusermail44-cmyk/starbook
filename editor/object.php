@@ -4,6 +4,12 @@ $dir = '../';
 require_once (isset($dir) ? $dir : '').'db/connect.php';
 include('../models/objectModel.php');
 $types = getTypes();
+if (isset($_GET['edit'])) {
+    $object = getInfoAboutObject($_GET['object']);
+    if ($object['tid'] == 3) {
+        $star = getInfoAboutStar($object['id']);
+    }
+}
 if (isset($_GET['del'])) {
     $delId = intval($_GET['object']);
     $objectToDel = getInfoAboutObject($delId);
