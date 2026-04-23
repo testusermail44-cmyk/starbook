@@ -1,4 +1,6 @@
 <?php
+ini_set('upload_max_filesize', '32M');
+ini_set('post_max_size', '64M');
 session_start();
 $dir = '../';
 require_once (isset($dir) ? $dir : '').'db/connect.php';
