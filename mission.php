@@ -2,7 +2,7 @@
 
 session_start();
 
-include('header.php');
+
 include('models/missionModel.php');
 include('models/commentModel.php');
 
@@ -16,7 +16,7 @@ if (isset($_POST['id'])) {
     header('Location: mission.php?id='.$_GET['id']);
     exit;
 }
-
+include('header.php');
 $mission = getMission($_GET['id']);
 $comments = getMissionComments($_GET['id']);
 ?>
