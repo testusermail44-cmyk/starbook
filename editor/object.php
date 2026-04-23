@@ -61,8 +61,8 @@ if (isset($_POST['name'])) {
     $name = $_POST['name'];
     $description = $_POST['description'];
     $parameters = $_POST['parameters'];
-    $color = str_replace('#', '0x', $_POST['color'] ?: '0x000000');
-    $halo = str_replace('#', '0x', $_POST['halo'] ?: '0x000000');
+    $color = str_replace('#', '0x', ($_POST['color'] ?? '#000000') ?: '0x000000');
+    $halo  = str_replace('#', '0x', ($_POST['halo'] ?? '#000000') ?: '0x000000');
 
     $newImg = uploadFile($_FILES['image'] ?? null, $old['image'] ?? 'default.png');
     $newTexture = uploadFile($_FILES['texture'] ?? null, $oldStar['texture'] ?? 'star.jpg');
@@ -233,9 +233,9 @@ if (isset($_POST['name'])) {
                     </div>
                     <div class="vc">
                         <div class="t ac sr">Колір зірки</div>
-                        <input type="color" id="atmosphere-color" name="color" class="color-picker bbrg" value="<?= isset($_GET['edit']) ? (isset($star) ? '#' . ltrim($star['color'], '0x') : '#ffffff') : '#ffffff' ?>">
+                        <input type="color" id="star-color" name="color" class="color-picker bbrg" value="<?= isset($_GET['edit']) ? (isset($star) ? '#' . ltrim($star['color'], '0x') : '#ffffff') : '#ffffff' ?>">
                         <div class="t ac sr">Колір гало</div>
-                        <input type="color" id="atmosphere-color" name="halo" class="color-picker bbrg" value="<?= isset($_GET['edit']) ? (isset($star) ? '#' . ltrim($star['halo'], '0x') : '#ffffff') : '#ffffff' ?>">
+                        <input type="color" id="halo-color" name="halo" class="color-picker bbrg" value="<?= isset($_GET['edit']) ? (isset($star) ? '#' . ltrim($star['halo'], '0x') : '#ffffff') : '#ffffff' ?>">
                     </div>
                 </div>`;
             }
