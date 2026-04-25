@@ -63,7 +63,7 @@ function createObjectPanel($id, $name, $image, $type, $description)
                 Так
             </label>
             <label class="custom-checkbox">
-                <input type="radio" name="atmosphere" value="Ні" <?= isset($_GET['atmosphere']) ? ($_GET['atmosphere'] == 'Так' ? 'checked' : '') : '' ?> />
+                <input type="radio" name="atmosphere" value="Ні" <?= isset($_GET['atmosphere']) ? ($_GET['atmosphere'] == 'Ні' ? 'checked' : '') : '' ?> />
                 <span class="checkmark bbrg"></span>
                 Ні
             </label>
