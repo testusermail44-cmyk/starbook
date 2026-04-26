@@ -688,7 +688,7 @@ textarea {
 
 .scroll-e {
   overflow-y: scroll;
-  height: calc(100% - 60px);
+  height: calc(100vh - 60px);
 }
 
 .edit {
