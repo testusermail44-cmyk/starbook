@@ -35,17 +35,7 @@ function uploadFile($file, $oldValue, $localPath = "../public/models/") {
     $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
 
     if (in_array($ext, $imageExtensions)) {
-        $apiKey = getenv('IMG_API');
-        $imageData = base64_encode(file_get_contents($file['tmp_name']));
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://api.imgbb.com/1/upload?key=' . $apiKey);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, ['image' => $imageData]);
-        $response = curl_exec($ch);
-        curl_close($ch);
-        $json = json_decode($response, true);
-        return $json['data']['url'] ?? $oldValue;
+        return $oldValue;
     } 
     
     $fileName = time() . '_' . $file['name'];
@@ -66,10 +56,10 @@ if (isset($_POST['name'])) {
     $color = str_replace('#', '0x', ($_POST['color'] ?? '#000000') ?: '0x000000');
     $halo  = str_replace('#', '0x', ($_POST['halo'] ?? '#000000') ?: '0x000000');
 
-    $newImg = uploadFile($_FILES['image'] ?? null, $old['image'] ?? 'default.png');
-    $newTexture = uploadFile($_FILES['texture'] ?? null, $oldStar['texture'] ?? 'star.jpg');
-    $newDefuse = uploadFile($_FILES['defuse'] ?? null, $old['defuse'] ?? 'defuse.jpg');
-    $newNormal = uploadFile($_FILES['normal'] ?? null, $old['normal'] ?? 'normal.jpg');
+    $newImg = (isset($_POST['image_url']) && $_POST['image_url'] != '') ? $_POST['image_url'] : ($old['image'] ?? 'default.png');
+    $newTexture = (isset($_POST['texture_url']) && $_POST['texture_url'] != '') ? $_POST['texture_url'] : ($oldStar['texture'] ?? 'star.jpg');
+    $newDefuse = (isset($_POST['defuse_url']) && $_POST['defuse_url'] != '') ? $_POST['defuse_url'] : ($old['defuse'] ?? 'defuse.jpg');
+    $newNormal = (isset($_POST['normal_url']) && $_POST['normal_url'] != '') ? $_POST['normal_url'] : ($old['normal'] ?? 'normal.jpg');
     $newModel = uploadFile($_FILES['model'] ?? null, $old['model'] ?? 'sphere', "../public/models/");
 
     if ($id > 0) {
@@ -129,6 +119,12 @@ if (isset($_POST['name'])) {
         <form class="edit bbrg set big" id="editForm" method="post" action="<?= $actionUrl ?>"
             enctype="multipart/form-data">
             <div class="at">Редактор об'єктів</div>
+            
+            <input type="hidden" name="image_url" id="hidden_image" value="">
+            <input type="hidden" name="texture_url" id="hidden_texture" value="">
+            <input type="hidden" name="defuse_url" id="hidden_defuse" value="">
+            <input type="hidden" name="normal_url" id="hidden_normal" value="">
+
             <div class="editcontainer">
                 <div class="sic"><img class="edit-img bbrg"
                         src="<?= (isset($_GET['edit']) && strpos($object['image'], 'http') === 0) ? $object['image'] : "../public/images/objects/" . ((isset($_GET['edit']) ? $object['image'] : 'default.png') ?: 'default.png') . "?v=" . time() ?>" />
@@ -167,32 +163,17 @@ if (isset($_POST['name'])) {
             <button id='saveBtn' class="btn bbrg ob" type="submit">Зберегти</button>
         </form>
     </div>
-    <script>
-        document.querySelector('.edit-img').addEventListener('click', () => {
-            let inp = document.createElement('input');
-            inp.type = 'file';
-            inp.accept = 'image/*';
-            inp.click();
 
-            inp.onchange = () => {
-                let file = inp.files[0];
-                let reader = new FileReader();
-                reader.onload = e => {
-                    document.querySelector('.edit-img').src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-                let form = document.querySelector('form.edit.set');
-                inp.name = 'avatar';
-                form.appendChild(inp);
-            }
-        });
-    </script>
     <script>
+        const IMGBB_KEY = '<?= getenv('IMG_API') ?>';
         const select = document.querySelector('.custom-select');
         const container = document.querySelector('.editcontainer');
+        const saveBtn = document.getElementById('saveBtn');
+        const form = document.getElementById('editForm');
 
-        function enablePicker(selector, inputName) {
+        function enablePicker(selector, hiddenInputId) {
             const img = document.querySelector(selector);
+            if (!img) return;
 
             img.addEventListener('click', () => {
                 let inp = document.createElement('input');
@@ -200,18 +181,57 @@ if (isset($_POST['name'])) {
                 inp.accept = 'image/*';
                 inp.click();
 
-                inp.onchange = () => {
+                inp.onchange = async () => {
                     let file = inp.files[0];
+                    if (!file) return;
+
                     let reader = new FileReader();
                     reader.onload = e => {
-                        img.src = e.target.result;
+                        const targetImg = document.querySelector(selector);
+                        if (targetImg) targetImg.src = e.target.result;
                     };
                     reader.readAsDataURL(file);
 
-                    let form = document.querySelector('form.edit.set');
-                    inp.name = inputName;
-                    form.appendChild(inp);
+                    saveBtn.disabled = true;
+                    saveBtn.style.opacity = '0.5';
+                    saveBtn.style.cursor = 'not-allowed';
+                    saveBtn.innerText = 'Завантаження...';
+
+                    try {
+                        const base64 = await toBase64(file);
+                        const formData = new FormData();
+                        formData.append('image', base64.split(',')[1]);
+
+                        const res = await fetch('https://api.imgbb.com/1/upload?key=' + IMGBB_KEY, {
+                            method: 'POST',
+                            body: formData,
+                        });
+                        const data = await res.json();
+
+                        if (data && data.data && data.data.url) {
+                            document.getElementById(hiddenInputId).value = data.data.url;
+                        } else {
+                            alert('Помилка при завантаженні зображення на сервіс.');
+                        }
+                    } catch (err) {
+                        alert('Помилка мережі при завантаженні файлу.');
+                        console.error(err);
+                    } finally {
+                        saveBtn.disabled = false;
+                        saveBtn.style.opacity = '1';
+                        saveBtn.style.cursor = 'pointer';
+                        saveBtn.innerText = 'Зберегти';
+                    }
                 }
+            });
+        }
+
+        function toBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
             });
         }
 
@@ -295,23 +315,27 @@ if (isset($_POST['name'])) {
                     }
                 });
             }
-            enablePicker('.edit-img', 'image');
+
+            enablePicker('.edit-img', 'hidden_image');
             if (value == 3) {
-                enablePicker('#texture-img', 'texture');
+                enablePicker('#texture-img', 'hidden_texture');
             }
             else if (value != 3 && value != 8 && value != 2) {
-                enablePicker('#defuse-img', 'defuse');
-                enablePicker('#normal-img', 'normal');
+                enablePicker('#defuse-img', 'hidden_defuse');
+                enablePicker('#normal-img', 'hidden_normal');
             }
-
         }
+
         updateEditor();
         select.addEventListener('change', updateEditor);
-        document.getElementById('editForm').addEventListener('submit', function (event) {
+
+        form.addEventListener('submit', function (event) {
             const desc = document.getElementById("description");
             const parameters = document.querySelector('textarea[name="parameters"]');
             const typeSelect = document.querySelector('select[name="type"]');
+            
             document.getElementById("dfield").value = desc.innerHTML;
+            
             if (typeSelect.value == "0") {
                 alert("Оберіть тип!");
                 event.preventDefault();
@@ -327,10 +351,7 @@ if (isset($_POST['name'])) {
                 event.preventDefault();
                 return;
             }
-        });
-        const form = document.querySelector('form.edit.set');
-        const saveBtn = document.getElementById('saveBtn');
-        form.addEventListener('submit', () => {
+
             saveBtn.disabled = true;
             saveBtn.style.opacity = '0.5';
             saveBtn.style.cursor = 'not-allowed';
